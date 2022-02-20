@@ -15,16 +15,12 @@
         android:theme="@style/Theme.HappyPlaces">
         <activity
             android:name=".activities.AddPlaceActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.AddHappyPlaces"
-            android:exported="false" />
-        <activity
-            android:name=".activities.AddPlaceActivity"
             android:exported="false"
             android:label="ADD HAPPY PLACE"
             android:screenOrientation="portrait"
-            android:theme="@style/CustomNoActionBar" />
+            android:theme="@style/CustomNoActionBar"/>
+
+
         <activity
             android:name=".activities.MainActivity"
             android:exported="true">
