@@ -41,6 +41,9 @@ class AddPlaceActivity : AppCompatActivity(), View.OnClickListener {
 
     private var cal = Calendar.getInstance()
 
+    private var mLatitude :Double =0.0
+    private var mLongitude :Double =0.0
+
     private lateinit var dateSetListener: DatePickerDialog.OnDateSetListener
 
     private val openGalleryLauncher: ActivityResultLauncher<Intent> =
@@ -84,6 +87,7 @@ class AddPlaceActivity : AppCompatActivity(), View.OnClickListener {
 
         binding.etDate.setOnClickListener(this)
         binding.tvAddImage.setOnClickListener(this)
+        binding.btnSave.setOnClickListener(this)
 
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -193,6 +197,9 @@ class AddPlaceActivity : AppCompatActivity(), View.OnClickListener {
                     }
                 }
                 pictureDialog.show()
+            }
+            R.id.btn_save ->{
+
             }
         }
     }
