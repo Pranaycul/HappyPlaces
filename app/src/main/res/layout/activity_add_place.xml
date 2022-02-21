@@ -90,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_top"
-            android:hint="Description"
+            android:hint="Location"
             app:layout_constraintTop_toBottomOf="@id/et_date_label">
 
             <com.google.android.material.textfield.TextInputEditText

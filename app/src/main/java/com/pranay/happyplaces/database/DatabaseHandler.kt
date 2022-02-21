@@ -2,7 +2,9 @@ package com.pranay.happyplaces.database
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import com.pranay.happyplaces.models.HappyPlaceModel
 
@@ -20,15 +22,22 @@ class DatabaseHandler(context: Context) :
         private const val KEY_DESCRIPTION = "description"
         private const val KEY_DATE = "date"
         private const val KEY_LOCATION = "location"
-        private const val KEY_LONGITUDE = "longitude"
         private const val KEY_LATITUDE = "latitude"
+        private const val KEY_LONGITUDE = "longitude"
 
 
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        val CREATE_HAPPY_PLACE_TABLE =
-            ("CREATE TABLE " + TABLE_HAPPY_PLACE + KEY_ID + "INTEGER PRIMARY KEY ," + KEY_TITLE + " TEXT," + KEY_IMAGE + " TEXT," + KEY_DESCRIPTION + " TEXT," + KEY_DATE + " TEXT," + KEY_LOCATION + " TEXT," + KEY_LATITUDE + " TEXT," + KEY_LONGITUDE + " TEXT)")
+        val CREATE_HAPPY_PLACE_TABLE = ("CREATE TABLE " + TABLE_HAPPY_PLACE + "("
+                +KEY_ID+ " INTEGER PRIMARY KEY,"
+                + KEY_TITLE + " TEXT,"
+                + KEY_IMAGE + " TEXT,"
+                + KEY_DESCRIPTION + " TEXT,"
+                + KEY_DATE + " TEXT,"
+                + KEY_LOCATION + " TEXT,"
+                + KEY_LATITUDE + " TEXT,"
+                + KEY_LONGITUDE + " TEXT)")
         db?.execSQL(CREATE_HAPPY_PLACE_TABLE)
     }
 
@@ -57,5 +66,37 @@ class DatabaseHandler(context: Context) :
         db.close()
         return result
 
+    }
+
+
+    fun getHappyPlaceList(): ArrayList<HappyPlaceModel> {
+        val happyPlaceList: ArrayList<HappyPlaceModel> = ArrayList()
+        val selectQuery = "SELECT * FROM $TABLE_HAPPY_PLACE"
+
+        val db = this.readableDatabase
+        try {
+            val cursor: Cursor = db.rawQuery(selectQuery, null)
+            if (cursor.moveToFirst()) {
+                do {
+                    val place = HappyPlaceModel(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getDouble(6),
+                        cursor.getDouble(7)
+                    )
+                    happyPlaceList.add(place)
+
+                } while (cursor.moveToNext())
+            }
+            cursor.close()
+        } catch (e: SQLiteException) {
+            db.execSQL(selectQuery)
+            return ArrayList()
+        }
+        return happyPlaceList
     }
 }

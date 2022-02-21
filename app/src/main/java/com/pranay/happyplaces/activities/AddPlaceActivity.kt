@@ -40,7 +40,7 @@ class AddPlaceActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityAddPlaceBinding
 
-    private lateinit var saveImageToInternalStorage: Uri
+    private  var saveImageToInternalStorage: Uri?= null
 
     private var cal = Calendar.getInstance()
 
@@ -235,7 +235,7 @@ class AddPlaceActivity : AppCompatActivity(), View.OnClickListener {
                         if (addHappyPlaceResult > 0) {
                             Toast.makeText(this, "Data entry is successful", Toast.LENGTH_LONG)
                                 .show()
-                            finish()
+                           finish()
                         }
                     }
                 }
