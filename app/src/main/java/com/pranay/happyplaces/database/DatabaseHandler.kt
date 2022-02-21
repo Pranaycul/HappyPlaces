@@ -38,22 +38,22 @@ class DatabaseHandler(context: Context) :
     }
 
 
-    fun addHappyPlace(happyPlace:HappyPlaceModel): Long{
-        val db= this.writableDatabase
+    fun addHappyPlace(happyPlace: HappyPlaceModel): Long {
+        val db = this.writableDatabase
 
 
-        val contentValues= ContentValues().apply {
-            put(KEY_TITLE ,happyPlace.title)
+        val contentValues = ContentValues().apply {
+            put(KEY_TITLE, happyPlace.title)
             put(KEY_IMAGE, happyPlace.image)
-            put(KEY_DESCRIPTION,happyPlace.description)
-            put(KEY_DATE,happyPlace.date)
-            put(KEY_LOCATION,happyPlace.location)
+            put(KEY_DESCRIPTION, happyPlace.description)
+            put(KEY_DATE, happyPlace.date)
+            put(KEY_LOCATION, happyPlace.location)
             put(KEY_LATITUDE, happyPlace.latitude)
             put(KEY_LONGITUDE, happyPlace.longitude)
         }
 
 
-        val result = db.insert(TABLE_HAPPY_PLACE,null,contentValues)
+        val result = db.insert(TABLE_HAPPY_PLACE, null, contentValues)
         db.close()
         return result
 

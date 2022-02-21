@@ -16,6 +16,7 @@ import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -26,7 +27,9 @@ import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.pranay.happyplaces.R
+import com.pranay.happyplaces.database.DatabaseHandler
 import com.pranay.happyplaces.databinding.ActivityAddPlaceBinding
+import com.pranay.happyplaces.models.HappyPlaceModel
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,8 +44,8 @@ class AddPlaceActivity : AppCompatActivity(), View.OnClickListener {
 
     private var cal = Calendar.getInstance()
 
-    private var mLatitude :Double =0.0
-    private var mLongitude :Double =0.0
+    private var mLatitude: Double = 0.0
+    private var mLongitude: Double = 0.0
 
     private lateinit var dateSetListener: DatePickerDialog.OnDateSetListener
 
@@ -54,9 +57,9 @@ class AddPlaceActivity : AppCompatActivity(), View.OnClickListener {
                     val imageStream: InputStream? = contentResolver.openInputStream(selectedImage)
 
                     val yourSelectedImage: Bitmap = BitmapFactory.decodeStream(imageStream)
-                    saveImageToInternalStorage=saveImageToInternalStorage(yourSelectedImage)
+                    saveImageToInternalStorage = saveImageToInternalStorage(yourSelectedImage)
                     imageStream?.close()
-                    Log.i("ImagePath::","$saveImageToInternalStorage")
+                    Log.i("ImagePath::", "$saveImageToInternalStorage")
                     binding.ivImage.setImageBitmap(yourSelectedImage)
                 } catch (e: FileNotFoundException) {
                     e.printStackTrace(); }
@@ -84,18 +87,19 @@ class AddPlaceActivity : AppCompatActivity(), View.OnClickListener {
 
                 updateDateInView()
             }
-
+        updateDateInView()
         binding.etDate.setOnClickListener(this)
         binding.tvAddImage.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
 
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CAMERA && resultCode == RESULT_OK) {
             val imageBitmap = data!!.extras!!.get("data") as Bitmap
-            saveImageToInternalStorage= saveImageToInternalStorage(imageBitmap)
-            Log.i("ImagePath::","$saveImageToInternalStorage")
+            saveImageToInternalStorage = saveImageToInternalStorage(imageBitmap)
+            Log.i("ImagePath::", "$saveImageToInternalStorage")
             binding.ivImage.setImageBitmap(imageBitmap)
         }
     }
@@ -139,6 +143,7 @@ class AddPlaceActivity : AppCompatActivity(), View.OnClickListener {
             }).onSameThread()
             .check()
     }
+
     private fun takePhotoFromCamera() {
 
         Dexter.withContext(this)
@@ -198,7 +203,42 @@ class AddPlaceActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 pictureDialog.show()
             }
-            R.id.btn_save ->{
+            R.id.btn_save -> {
+                when {
+                    binding.etTitle.text.isNullOrEmpty() -> {
+                        Toast.makeText(this, "Please add Title", Toast.LENGTH_LONG).show()
+                    }
+                    binding.etDescription.text.isNullOrEmpty() -> {
+                        Toast.makeText(this, "Please add Description", Toast.LENGTH_LONG).show()
+                    }
+                    binding.etLocation.text.isNullOrEmpty() -> {
+                        Toast.makeText(this, "Please add Location", Toast.LENGTH_LONG).show()
+                    }
+                    saveImageToInternalStorage == null -> {
+                        Toast.makeText(this, "Please add Image", Toast.LENGTH_LONG).show()
+                    }
+                    else -> {
+                        val happyPlaceModel = HappyPlaceModel(
+                            0,
+                            binding.etTitle.text.toString(),
+                            saveImageToInternalStorage.toString(),
+                            binding.etDescription.text.toString(),
+                            binding.etDate.text.toString(),
+                            binding.etLocation.text.toString(),
+                            mLatitude,
+                            mLongitude
+
+                        )
+                        val dbHandler = DatabaseHandler(this)
+                        val addHappyPlaceResult = dbHandler.addHappyPlace(happyPlaceModel)
+
+                        if (addHappyPlaceResult > 0) {
+                            Toast.makeText(this, "Data entry is successful", Toast.LENGTH_LONG)
+                                .show()
+                            finish()
+                        }
+                    }
+                }
 
             }
         }
@@ -224,6 +264,7 @@ class AddPlaceActivity : AppCompatActivity(), View.OnClickListener {
                 dialog.dismiss()
             }.show()
     }
+
     private fun saveImageToInternalStorage(bitmap: Bitmap): Uri {
         val wrapper = ContextWrapper(applicationContext)
 
@@ -251,6 +292,7 @@ class AddPlaceActivity : AppCompatActivity(), View.OnClickListener {
 
         return Uri.parse(file.absolutePath)
     }
+
     companion object {
 
         private const val CAMERA = 2
