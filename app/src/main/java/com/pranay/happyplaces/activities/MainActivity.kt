@@ -47,6 +47,16 @@ class MainActivity : AppCompatActivity() {
         val placesAdapter = HappyPlacesAdapter(happyPlaceList)
 
         binding.rvHappyPlaceItem.adapter = placesAdapter
+
+       placesAdapter.setOnItemClickListener(object :HappyPlacesAdapter.OnItemClickListener{
+           override fun onItemClick(position: Int,model: HappyPlaceModel) {
+
+               val intent = Intent(this@MainActivity, HappyPlaceDetailActivity::class.java)
+               Log.i("Title ::", model.title)
+               startActivity(intent)
+           }
+
+       })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

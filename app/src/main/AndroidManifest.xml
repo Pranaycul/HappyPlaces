@@ -16,7 +16,11 @@
 
         <activity
             android:name=".activities.HappyPlaceDetailActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/CustomNoActionBar"
+            android:screenOrientation="portrait"
+            android:label="Happy Place Details"
+            />
         <activity
             android:name=".activities.AddPlaceActivity"
             android:exported="false"
