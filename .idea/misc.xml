@@ -7,8 +7,9 @@
         <entry key="..\:/Users/visit/AndroidStudioProjects/HappyPlaces/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.118" />
         <entry key="..\:/Users/visit/AndroidStudioProjects/HappyPlaces/app/src/main/res/drawable/shape_button_rounded.xml" value="0.165" />
         <entry key="..\:/Users/visit/AndroidStudioProjects/HappyPlaces/app/src/main/res/drawable/shape_image_view_border.xml" value="0.165" />
-        <entry key="..\:/Users/visit/AndroidStudioProjects/HappyPlaces/app/src/main/res/layout/activity_add_place.xml" value="0.24583333333333332" />
+        <entry key="..\:/Users/visit/AndroidStudioProjects/HappyPlaces/app/src/main/res/layout/activity_add_place.xml" value="0.1" />
         <entry key="..\:/Users/visit/AndroidStudioProjects/HappyPlaces/app/src/main/res/layout/activity_main.xml" value="0.24583333333333332" />
+        <entry key="..\:/Users/visit/AndroidStudioProjects/HappyPlaces/app/src/main/res/layout/item_happy_place.xml" value="0.25" />
       </map>
     </option>
   </component>

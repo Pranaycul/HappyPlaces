@@ -1,6 +1,7 @@
 package com.pranay.happyplaces.activities
 
 import android.Manifest
+import android.app.Activity
 
 import android.app.DatePickerDialog
 import android.content.ActivityNotFoundException
@@ -233,8 +234,7 @@ class AddPlaceActivity : AppCompatActivity(), View.OnClickListener {
                         val addHappyPlaceResult = dbHandler.addHappyPlace(happyPlaceModel)
 
                         if (addHappyPlaceResult > 0) {
-                            Toast.makeText(this, "Data entry is successful", Toast.LENGTH_LONG)
-                                .show()
+                            setResult(Activity.RESULT_OK)
                            finish()
                         }
                     }
