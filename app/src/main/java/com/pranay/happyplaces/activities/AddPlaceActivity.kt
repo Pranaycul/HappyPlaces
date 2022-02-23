@@ -40,8 +40,9 @@ import java.util.*
 class AddPlaceActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityAddPlaceBinding
+    private var mHappyPlaceDetails: HappyPlaceModel? = null
 
-    private  var saveImageToInternalStorage: Uri?= null
+    private var saveImageToInternalStorage: Uri? = null
 
     private var cal = Calendar.getInstance()
 
@@ -79,6 +80,10 @@ class AddPlaceActivity : AppCompatActivity(), View.OnClickListener {
             onBackPressed()
         }
 
+        if (intent.hasExtra(MainActivity.EXTRA_PLACE_DETAILS)){
+            mHappyPlaceDetails =intent.getParcelableExtra(MainActivity.EXTRA_PLACE_DETAILS)
+
+        }
 
         dateSetListener =
             DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
@@ -89,6 +94,18 @@ class AddPlaceActivity : AppCompatActivity(), View.OnClickListener {
                 updateDateInView()
             }
         updateDateInView()
+        if(mHappyPlaceDetails != null){
+            supportActionBar?.title ="Edit Happy Place"
+            binding.etTitle.setText(mHappyPlaceDetails!!.title)
+            binding.etDescription.setText(mHappyPlaceDetails!!.description)
+            binding.etDate.setText(mHappyPlaceDetails!!.date)
+            binding.etLocation.setText(mHappyPlaceDetails!!.location)
+            mLatitude= mHappyPlaceDetails!!.latitude
+            mLongitude= mHappyPlaceDetails!!.longitude
+            saveImageToInternalStorage= Uri.parse(mHappyPlaceDetails!!.image)
+            binding.ivImage.setImageURI(saveImageToInternalStorage)
+            binding.btnSave.text = "Update"
+        }
         binding.etDate.setOnClickListener(this)
         binding.tvAddImage.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
@@ -235,7 +252,7 @@ class AddPlaceActivity : AppCompatActivity(), View.OnClickListener {
 
                         if (addHappyPlaceResult > 0) {
                             setResult(Activity.RESULT_OK)
-                           finish()
+                            finish()
                         }
                     }
                 }

@@ -1,16 +1,19 @@
 package com.pranay.happyplaces.adapters
 
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
-
 import android.view.ViewGroup
-
 import androidx.recyclerview.widget.RecyclerView
+import com.pranay.happyplaces.activities.AddPlaceActivity
+import com.pranay.happyplaces.activities.MainActivity
 import com.pranay.happyplaces.databinding.ItemHappyPlaceBinding
 import com.pranay.happyplaces.models.HappyPlaceModel
 
-open class HappyPlacesAdapter(private var list:ArrayList<HappyPlaceModel>) : RecyclerView.Adapter<HappyPlacesAdapter.ViewHolder>() {
+open class HappyPlacesAdapter(  private val context: Context,private var list:ArrayList<HappyPlaceModel>) : RecyclerView.Adapter<HappyPlacesAdapter.ViewHolder>() {
 
     private lateinit var mListener: OnItemClickListener
     interface OnItemClickListener{
@@ -57,10 +60,19 @@ open class HappyPlacesAdapter(private var list:ArrayList<HappyPlaceModel>) : Rec
 
 
     }
+    fun notifyEditItem(activity:Activity, position: Int, requestCode:Int){
+        val intent= Intent( context, AddPlaceActivity::class.java)
+        intent.putExtra(MainActivity.EXTRA_PLACE_DETAILS,list[position])
+        activity.startActivityForResult(intent,requestCode)
+
+        notifyItemChanged(position)
+
+    }
 
     override fun getItemCount(): Int {
        return list.size
     }
 
 }
+
 
